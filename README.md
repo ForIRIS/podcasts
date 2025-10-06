@@ -1,12 +1,14 @@
 # Podcasts App
 
 - Issue : 🧐 The mock data is not refreshing or providing new content when navigating to the next page.
-
+```
+Error loading podcasts: fetchNoMoreData
+```
 ## 📐 Design
 
 The app was designed based on the following mockup specifications:
 
-![Podcast App Design](podcasts_design.png)
+![Podcast App Design](podcasts_design_2.png)
 
 ### Design Requirements
 - **Screen 1**: List view with podcast thumbnails, titles, publishers, and favorite indicators

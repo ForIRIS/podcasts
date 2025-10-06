@@ -11,8 +11,8 @@ struct PodcastDetailView: View {
     @State var viewModel: PodcastDetailViewModel
     let coordinator: AppCoordinator
     
-    init(_ podcast: Podcast, coordinator: AppCoordinator) {
-        viewModel = PodcastDetailViewModel(podcast: podcast)
+    init(_ podcastRepository: PodcastRepository, _ podcast: Podcast, coordinator: AppCoordinator) {
+        viewModel = PodcastDetailViewModel(detailUseCase: PodcastDetailUsecase(repository: podcastRepository), podcast: podcast)
         self.coordinator = coordinator
     }
     
@@ -62,6 +62,7 @@ struct PodcastDetailView: View {
                         .cornerRadius(12)
                 }
                 .contentShape(Rectangle())
+                .disabled(viewModel.isProcessing)
                 
                 Text("\(viewModel.description)")
                     .foregroundStyle(Color(.secondaryLabel))

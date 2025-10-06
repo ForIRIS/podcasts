@@ -29,7 +29,9 @@ struct ContentView: View {
                     // Currently, handle directly.
                     switch route {
                     case .podcastDetail(let podcast):
-                        PodcastDetailView(podcast, coordinator: coordinator)
+                        PodcastDetailView(podcastRepository,
+                                          podcast,
+                                          coordinator: coordinator)
                     }
                 }
         }

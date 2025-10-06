@@ -14,14 +14,32 @@ class PodcastDetailViewModel {
     var thumbnail: String { podcast.thumbnail ?? "" }
     var description: String { podcast.podDescription ?? "" }
     var favourite: Bool { podcast.favourite }
+    var isProcessing: Bool = false
     
     private var podcast: Podcast
+    private let detailUseCase: PodcastDetailUsecase
     
-    init(podcast: Podcast) {
+    init(detailUseCase: PodcastDetailUsecase, podcast: Podcast) {
+        self.detailUseCase = detailUseCase
         self.podcast = podcast
     }
     
     func toggleFavourite() {
-        podcast.favourite.toggle()
+        guard !isProcessing else {
+            print("toggle Favourite is processing...")
+            return
+        }
+        
+        isProcessing = true
+        
+        Task { @MainActor in
+            do {
+                try await self.detailUseCase.toggleFavorite(podcastId: self.podcast.id)
+            } catch {
+                print("Error toggle podcast favourite: \(error)")
+            }
+            
+            isProcessing = false
+        }
     }
 }
