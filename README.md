@@ -8,7 +8,7 @@ Error loading podcasts: fetchNoMoreData
 
 The app was designed based on the following mockup specifications:
 
-![Podcast App Design](podcasts_design_2.png)
+![Podcast App Design](podcast_design_2.png)
 
 ### Design Requirements
 - **Screen 1**: List view with podcast thumbnails, titles, publishers, and favorite indicators
