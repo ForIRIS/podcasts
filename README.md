@@ -1,5 +1,7 @@
 # Podcasts App
 
+- Issue : 🧐 The mock data is not refreshing or providing new content when navigating to the next page.
+
 ## 📐 Design
 
 The app was designed based on the following mockup specifications:
