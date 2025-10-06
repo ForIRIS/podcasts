@@ -36,7 +36,7 @@ struct BestPodcasts: Decodable {
     }
 }
 
-struct PodcastData: Decodable {
+struct PodcastData: Codable {
     let id: String
     let title: String
     let publisher: String
@@ -57,5 +57,15 @@ struct PodcastData: Decodable {
         description = try values.decodeIfPresent(String.self, forKey: .description)
         thumbnail = try values.decodeIfPresent(String.self, forKey: .thumbnail)
         lastedPublishDate = try values.decode(Date.self, forKey: .lastedPublishDate)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(title, forKey: .title)
+        try container.encode(publisher, forKey: .publisher)
+        try container.encode(description, forKey: .description)
+        try container.encode(thumbnail, forKey: .thumbnail)
+        try container.encode(lastedPublishDate, forKey: .lastedPublishDate)
     }
 }
