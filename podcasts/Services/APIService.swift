@@ -58,4 +58,39 @@ class APIService {
             }
         }
     }
+    
+    /**
+     Search for podcasts based on a query.
+     
+     - Parameters:
+       - query: The search term
+     
+     - Returns: SearchResult object containing the search results
+     
+     - Throws: PodcastApiError or decoding error if the request fails
+     */
+    func searchPodcasts(query: String) async throws -> SearchResult {
+        try await withCheckedThrowingContinuation { continuation in
+            var parameters: [String: String] = [:]
+            parameters["q"] = query
+            
+            client.search(parameters: parameters) { response in
+                if let error = response.error {
+                    continuation.resume(throwing: error)
+                } else {
+                    guard let json = response.toJson() else {
+                        return continuation.resume(throwing: PodcastApiError.invalidRequestError)
+                    }
+                    
+                    do {
+                        let data = try json.rawData()
+                        let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
+                        continuation.resume(returning: searchResult)
+                    } catch {
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        }
+    }
 }

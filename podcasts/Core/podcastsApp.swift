@@ -10,12 +10,20 @@ import SwiftData
 
 @main
 struct podcastsApp: App {
-    @State var repository = PodcastRepository(apiService: APIService(), context: Persistence.shared.context())
+    @State private var diContainer = DIContainer()
+    @State private var coordinator: AppCoordinator
     
+    init() {
+        let container = DIContainer()
+        _diContainer = State(initialValue: container)
+        _coordinator = State(initialValue: AppCoordinator(diContainer: container))
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(repository)
+                .environment(diContainer)
+                .environment(coordinator)
                 .modelContainer(Persistence.shared.container)
         }
     }

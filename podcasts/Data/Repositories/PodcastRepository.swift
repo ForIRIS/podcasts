@@ -28,6 +28,12 @@ class PodcastRepository {
         try await apiService.fetchBestPodcasts(genreId: genreId, page: offset)
     }
     
+    func search(query: String) async throws -> [Podcast] {
+        let predicate = #Predicate<Podcast> { podcast in podcast.title.localizedStandardContains(query) }
+        let descriptor = FetchDescriptor<Podcast>(predicate: predicate, sortBy: [SortDescriptor(\.lastUpdatedAt, order: .reverse)])
+        return try context.fetch(descriptor)
+    }
+    
     func insertOrUpdatePodcasts(_ podcasts: [PodcastData]) async throws {
         for podcast in podcasts {
             if let existing = try? context.fetch(FetchDescriptor<Podcast>(predicate: #Predicate { $0.id == podcast.id })).first {

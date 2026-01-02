@@ -10,7 +10,7 @@
 
 import Foundation
 
-struct BestPodcasts: Decodable {
+struct BestPodcasts: Decodable, Hashable {
     let id: Int
     let name: String
     let total: Int
@@ -36,16 +36,18 @@ struct BestPodcasts: Decodable {
     }
 }
 
-struct PodcastData: Codable {
+struct PodcastData: Codable, Hashable {
     let id: String
     let title: String
     let publisher: String
     let description: String?
     let thumbnail: String?
+    let listennotesUrl: String?
     let lastedPublishDate: Date
     
     enum CodingKeys: String, CodingKey {
         case id, title, publisher, description, thumbnail
+        case listennotesUrl = "listennotes_url"
         case lastedPublishDate = "latest_pub_date_ms"
     }
     
@@ -56,6 +58,7 @@ struct PodcastData: Codable {
         publisher = try values.decode(String.self, forKey: .publisher)
         description = try values.decodeIfPresent(String.self, forKey: .description)
         thumbnail = try values.decodeIfPresent(String.self, forKey: .thumbnail)
+        listennotesUrl = try values.decodeIfPresent(String.self, forKey: .listennotesUrl)
         lastedPublishDate = try values.decode(Date.self, forKey: .lastedPublishDate)
     }
     
@@ -66,6 +69,7 @@ struct PodcastData: Codable {
         try container.encode(publisher, forKey: .publisher)
         try container.encode(description, forKey: .description)
         try container.encode(thumbnail, forKey: .thumbnail)
+        try container.encode(listennotesUrl, forKey: .listennotesUrl)
         try container.encode(lastedPublishDate, forKey: .lastedPublishDate)
     }
 }

@@ -9,16 +9,18 @@ import SwiftUI
 
 enum AppRoutes: Hashable {
     case podcastDetail(Podcast)
+    case podcastSearchDetail(Podcast)
 }
 
-/**
- Navigation coordinator using NavigationPath.
- 
- - Note: Uses @Observable for automatic UI updates when navigation state changes
- */
 @Observable
 class AppCoordinator {
     var path = NavigationPath()
+    var searchPath = NavigationPath()
+    private let diContainer: DIContainer
+    
+    init(diContainer: DIContainer) {
+        self.diContainer = diContainer
+    }
     
     func navigateToDetail(podcast: Podcast) {
         path.append(AppRoutes.podcastDetail(podcast))
@@ -26,5 +28,18 @@ class AppCoordinator {
     
     func navigationBack() {
         path.removeLast()
+    }
+    
+    @ViewBuilder
+    func build(_ route: AppRoutes) -> some View {
+        switch route {
+        case .podcastDetail(let podcast), .podcastSearchDetail(let podcast):
+            let viewModel = PodcastDetailViewModel(
+                podcast: podcast,
+                audioPlayerService: diContainer.audioPlayerService,
+                detailUsecase: diContainer.podcastDetailUsecase
+            )
+            PodcastDetailView(viewModel: viewModel)
+        }
     }
 }

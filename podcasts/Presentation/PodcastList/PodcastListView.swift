@@ -8,13 +8,8 @@
 import SwiftUI
 
 struct PodcastListView: View {
+    @Environment(AppCoordinator.self) private var coordinator
     @State var viewModel: PodcastListViewModel
-    let coordinator: AppCoordinator
-    
-    init(_ podcastRepository: PodcastRepository, coordinator: AppCoordinator) {
-        self.viewModel = PodcastListViewModel(listUseCase: PodcastListUsecase(repository: podcastRepository))
-        self.coordinator = coordinator  
-    }
     
     var body: some View {
         List {
